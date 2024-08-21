@@ -26,28 +26,28 @@ The Crowdfunding Application is a platform that allows individuals in need to re
 
 #### Steps
  * Clone the repository and navigate to the project directory.
-```json
+```
 git clone git@github.com:roc41d/crowdfunding-app.git
 cd crowdfunding-app
 ```
  * Install the dependencies using Composer.
-```json
-composer install
+```
+  composer install
 ```
 * Configure Environment Variables
-```json
+```
 cp .env.example .env
 ```
 * Generate a new application key.
-```json
+```
 php artisan key:generate
 ```
 * Run Migrations
-```json
+```
 php artisan migrate
 ```
 * Start the development server.
-```json
+```
 php artisan serve
 ```
 Access the api at `http://localhost:8000/api/`
@@ -77,14 +77,14 @@ Access the api at `http://localhost:8000/api/`
 }
 ````
  - `POST /api/logout`: Logout a user
-```json
+```
 headers
   Authorization: Bearer {token}
 ```
 
 ## Donation Requests:
 All requests require a valid token in the Authorization header.
-```json
+```
 headers
   Authorization: Bearer {token}
 ```
@@ -100,11 +100,11 @@ headers
  - `GET /donations/{id}`: Retrieve a single donation request.
 
 ## Donation Transactions:
- - `POST /api/donations/{id}/donate`: Make a donation to a specific request, either as a registered user or as a guest (with an option to donate anonymously or provide a name and email).
+ - `POST /api/donations/{id}/donate`: Make a donation to a specific request, either as a registered user or as a guest (with an option to donate anonymously or provide a donor name and donor email).
 ```json
 {
     "amount": 5000,
-    "donor_name": "Mike Doe", // Optional
-    "donor_email": "mikedoe@email.com", // Optional
+    "donor_name": "Mike Doe",
+    "donor_email": "mikedoe@email.com"
 }
 ```
