@@ -2,9 +2,7 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class DonationTransactionRequest extends FormRequest
+class DonateRequest extends CustomRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +20,6 @@ class DonationTransactionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'donation_id' => 'required|exists:donations,id',
             'amount' => 'required|numeric|min:1',
         ];
     }

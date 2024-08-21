@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\DonationCompletedException;
 use App\Http\Requests\CreateDonationRequest;
+use App\Http\Requests\DonateRequest;
 use App\Services\DonationService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -46,6 +48,26 @@ class DonationController extends Controller
                 'message' => 'Donation fetched successfully',
                 'donation' => $donation,
             ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], $e->getCode() ?: 500);
+        }
+    }
+
+    public function donate(DonateRequest $request, int $id)
+    {
+        try {
+            $donation = $this->donationService->processDonation($request->validated(), $id);
+
+            return response()->json([
+                'message' => 'Donation processed successfully',
+                'donation' => $donation,
+            ], 200);
+        } catch (DonationCompletedException $e) {
+            return response()->json([
+                'info' => $e->getMessage(),
+            ], 400);
         } catch (Exception $e) {
             return response()->json([
                 'error' => $e->getMessage(),
