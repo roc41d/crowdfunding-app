@@ -43,7 +43,7 @@ class DonationService
     public function getDonation(int $id): Donation
     {
         try {
-            $donation = Donation::find($id);
+            $donation = Donation::with('transactions')->findOrFail($id);;
             if (!$donation) {
                 throw new Exception('Donation not found', 404);
             }
@@ -51,22 +51,6 @@ class DonationService
         } catch (Exception $e) {
             throw new Exception('An error occurred while fetching donation', 500);
         }
-    }
-
-    /**
-     * Mark a donation as completed
-     * @param Donation $donation
-     * @return Donation
-     */
-    public function markDonationAsCompleted(Donation $donation): Donation
-    {
-        $donation->collected_amount += $donation->amount;
-        if ($donation->collected_amount >= $donation->target_amount) {
-            $donation->completed = true;
-            $donation->save();
-        }
-
-        return $donation;
     }
 
     public function processDonation(array $data, int $donation_id): Donation
