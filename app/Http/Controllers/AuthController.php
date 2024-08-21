@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\LogoutRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
@@ -57,5 +58,12 @@ class AuthController extends Controller
                 'error' => $e->getMessage(),
             ], $e->getCode() ?: 500);
         }
+    }
+
+    public function logout(LogoutRequest $request): JsonResponse
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'User logged out successfully'], 200);
     }
 }
