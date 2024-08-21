@@ -7,7 +7,6 @@ use App\Http\Requests\LogoutRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
 use Exception;
 
 class AuthController extends Controller

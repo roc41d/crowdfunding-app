@@ -52,7 +52,7 @@ class DonationController extends Controller
             ], 200);
         } catch (DonationNotFoundException $e) {
             return response()->json([
-                'error' => $e->getMessage(),
+                'message' => $e->getMessage(),
             ], $e->getCode());
         } catch (Exception $e) {
             return response()->json([
@@ -72,11 +72,11 @@ class DonationController extends Controller
             ], 200);
         } catch (DonationNotFoundException $e) {
             return response()->json([
-                'error' => $e->getMessage(),
+                'message' => $e->getMessage(),
             ], $e->getCode());
         } catch (DonationCompletedException $e) {
             return response()->json([
-                'info' => $e->getMessage(),
+                'message' => $e->getMessage(),
             ], 400);
         } catch (Exception $e) {
             return response()->json([
@@ -101,18 +101,16 @@ class DonationController extends Controller
             $donations = $this->donationService->getPaginatedDonations($page, $perPage);
 
             return response()->json([
-                'success' => true,
+                'message' => 'Donations fetched successfully',
                 'data' => $donations,
             ], 200);
          } catch (DonationNotFoundException $e) {
             return response()->json([
-                'success' => false,
                 'message' => $e->getMessage(),
             ], $e->getCode());
         } catch (Exception $e) {
             return response()->json([
-                'success' => false,
-                'message' => $e->getMessage(),
+                'error' => $e->getMessage(),
             ], 500);
         }
     }
