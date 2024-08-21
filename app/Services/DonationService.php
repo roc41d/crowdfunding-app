@@ -67,7 +67,10 @@ class DonationService
         try {
             DB::beginTransaction();
 
-            $donation = Donation::findOrFail($donation_id);
+            $donation = Donation::find($donation_id);
+            if (!$donation) {
+                throw new DonationNotFoundException('Donation not found', 404);
+            }
             if ($donation->completed) {
                 throw new DonationCompletedException('Donation already completed', 400);
             }
@@ -88,6 +91,9 @@ class DonationService
             DB::commit();
 
             return $donation;
+        } catch (DonationNotFoundException $e) {
+            DB::rollBack();
+            throw new DonationNotFoundException($e->getMessage(), $e->getCode());
         } catch (DonationCompletedException $e) {
             DB::rollBack();
             throw new DonationCompletedException($e->getMessage(), $e->getCode());

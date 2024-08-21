@@ -69,6 +69,10 @@ class DonationController extends Controller
                 'message' => 'Donation processed successfully',
                 'donation' => $donation,
             ], 200);
+        } catch (DonationNotFoundException $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], $e->getCode());
         } catch (DonationCompletedException $e) {
             return response()->json([
                 'info' => $e->getMessage(),
