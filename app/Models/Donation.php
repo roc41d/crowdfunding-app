@@ -21,6 +21,15 @@ class Donation extends Model
         'completed',
     ];
 
+    protected $casts = [
+        'user_id' => 'integer',
+        'title' => 'string',
+        'description' => 'string',
+        'target_amount' => 'decimal:2',
+        'collected_amount' => 'decimal:2',
+        'completed' => 'boolean',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
