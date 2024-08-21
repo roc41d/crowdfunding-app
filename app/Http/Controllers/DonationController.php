@@ -64,11 +64,11 @@ class DonationController extends Controller
     public function donate(DonateRequest $request, int $id)
     {
         try {
-            $donation = $this->donationService->processDonation($request->validated(), $id);
+            $donationTransaction = $this->donationService->processDonation($request->validated(), $id);
 
             return response()->json([
                 'message' => 'Donation processed successfully',
-                'donation' => $donation,
+                'donation_transaction' => $donationTransaction,
             ], 200);
         } catch (DonationNotFoundException $e) {
             return response()->json([

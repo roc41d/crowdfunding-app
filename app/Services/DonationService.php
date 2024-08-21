@@ -60,10 +60,10 @@ class DonationService
      * Process a donation
      * @param array $data
      * @param int $donation_id
-     * @return Donation
+     * @return DonationTransaction
      * @throws Exception
      */
-    public function processDonation(array $data, int $donation_id): Donation
+    public function processDonation(array $data, int $donation_id): DonationTransaction
     {
         try {
             DB::beginTransaction();
@@ -91,7 +91,7 @@ class DonationService
 
             DB::commit();
 
-            return $donation;
+            return $transaction;
         } catch (DonationNotFoundException $e) {
             DB::rollBack();
             throw new DonationNotFoundException($e->getMessage(), $e->getCode());
