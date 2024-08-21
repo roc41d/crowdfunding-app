@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Exceptions\DonationCompletedException;
-use App\Http\Requests\DonateRequest;
+use App\Exceptions\DonationNotFoundException;
 use App\Models\Donation;
 use App\Models\DonationTransaction;
 use Illuminate\Support\Facades\Auth;
@@ -43,16 +43,25 @@ class DonationService
     public function getDonation(int $id): Donation
     {
         try {
-            $donation = Donation::with('transactions')->findOrFail($id);;
+            $donation = Donation::with('transactions')->find($id);
             if (!$donation) {
-                throw new Exception('Donation not found', 404);
+                throw new DonationNotFoundException('Donation not found', 404);
             }
             return $donation;
+        } catch (DonationNotFoundException $e) {
+            throw new DonationNotFoundException($e->getMessage(), $e->getCode());
         } catch (Exception $e) {
             throw new Exception('An error occurred while fetching donation', 500);
         }
     }
 
+    /**
+     * Process a donation
+     * @param array $data
+     * @param int $donation_id
+     * @return Donation
+     * @throws Exception
+     */
     public function processDonation(array $data, int $donation_id): Donation
     {
         try {
