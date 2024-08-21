@@ -10,4 +10,5 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/donations', [DonationController::class, 'createDonation']);
+    Route::get('/donations/{id}', [DonationController::class, 'getDonation']);
 });

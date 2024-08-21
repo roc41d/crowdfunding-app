@@ -36,4 +36,20 @@ class DonationController extends Controller
             ], $e->getCode() ?: 500);
         }
     }
+
+    public function getDonation($id): JsonResponse
+    {
+        try {
+            $donation = $this->donationService->getDonation($id);
+
+            return response()->json([
+                'message' => 'Donation fetched successfully',
+                'donation' => $donation,
+            ], 200);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], $e->getCode() ?: 500);
+        }
+    }
 }

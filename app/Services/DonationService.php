@@ -29,4 +29,23 @@ class DonationService
             throw new Exception('Fail to a donation: ' . $e->getMessage(), 500);
         }
     }
+
+    /**
+     * Get a donation
+     * @param int $id
+     * @return Donation
+     * @throws Exception
+     */
+    public function getDonation(int $id): Donation
+    {
+        try {
+            $donation = Donation::find($id);
+            if (!$donation) {
+                throw new Exception('Donation not found', 404);
+            }
+            return $donation;
+        } catch (Exception $e) {
+            throw new Exception('An error occurred while fetching donation', 500);
+        }
+    }
 }
