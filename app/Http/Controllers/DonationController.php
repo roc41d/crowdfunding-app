@@ -9,6 +9,7 @@ use App\Http\Requests\DonateRequest;
 use App\Services\DonationService;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class DonationController extends Controller
 {
@@ -81,6 +82,38 @@ class DonationController extends Controller
             return response()->json([
                 'error' => $e->getMessage(),
             ], $e->getCode() ?: 500);
+        }
+    }
+
+    /**
+     * Get paginated donations.
+     *
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getPaginatedDonations(Request $request): JsonResponse
+    {
+
+        $page = $request->query('page', 1);
+        $perPage = $request->query('per_page', 20);
+
+        try {
+            $donations = $this->donationService->getPaginatedDonations($page, $perPage);
+
+            return response()->json([
+                'success' => true,
+                'data' => $donations,
+            ], 200);
+         } catch (DonationNotFoundException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], $e->getCode());
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
         }
     }
 }

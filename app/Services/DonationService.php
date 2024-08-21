@@ -9,6 +9,7 @@ use App\Models\DonationTransaction;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class DonationService
 {
@@ -100,6 +101,32 @@ class DonationService
         } catch (Exception $e) {
             DB::rollBack();
             throw new Exception('An error occurred while processing donation', 500);
+        }
+    }
+
+    /**
+     * Get paginated donations with configurable number per page.
+     *
+     * @param int $page
+     * @param int $perPage
+     * @return LengthAwarePaginator
+     * @throws Exception
+     */
+    public function getPaginatedDonations(int $page = 1, int $perPage = 20): LengthAwarePaginator
+    {
+        try {
+            $donations = Donation::paginate($perPage, ['*'], 'page', $page);
+
+            if ($donations->isEmpty() && $page > 1) {
+                throw new DonationNotFoundException('No donations found on this page.', 404);
+            }
+
+            return $donations;
+
+        } catch (DonationNotFoundException $e) {
+            throw new DonationNotFoundException($e->getMessage(), $e->getCode());
+        } catch (Exception $e) {
+            throw new Exception('An error occurred while fetching donations: ' . $e->getMessage());
         }
     }
 }

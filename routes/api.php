@@ -12,4 +12,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/donations', [DonationController::class, 'createDonation']);
     Route::get('/donations/{id}', [DonationController::class, 'getDonation']);
     Route::post('/donations/{id}/donate', [DonationController::class, 'donate']);
+    Route::get('/donations', [DonationController::class, 'getPaginatedDonations']);
 });
