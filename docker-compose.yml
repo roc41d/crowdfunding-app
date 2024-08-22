@@ -1,0 +1,53 @@
+version: "3"
+
+services:
+    # api
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        container_name: app
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        networks:
+            - laravel
+
+    # nginx
+    nginx:
+        image: nginx
+        restart: unless-stopped
+        container_name: nginx
+        ports:
+            - "8000:80"
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/:/etc/nginx/conf.d/
+        networks:
+            - laravel
+
+    # db mysql
+    db:
+        image: mysql
+        platform: linux/x86_64
+        restart: unless-stopped
+        container_name: db
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE:-crowdfunding_app}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+            MYSQL_PASSWORD: ${DB_PASSWORD:-admin}
+            MYSQL_USER: ${DB_USERNAME:-root}
+        volumes:
+            - mysql_data:/var/lib/mysql
+        ports:
+            - "3306:3306"
+        networks:
+            - laravel
+volumes:
+    mysql_data:
+        driver: local
+
+networks:
+    laravel:
+        driver: bridge

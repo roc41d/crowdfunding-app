@@ -36,26 +36,69 @@ cd crowdfunding-app
 ```
 * Configure Environment Variables
 ```
-cp .env.example .env
+ cp .env.example .env
 ```
 * Generate a new application key.
 ```
-php artisan key:generate
+ php artisan key:generate
 ```
 * Run Migrations
 ```
-php artisan migrate
+ php artisan migrate
 ```
 * Start the development server.
 ```
-php artisan serve
+ php artisan serve
 ```
-Access the api at `http://localhost:8000/api/`
+Access the api at `http://localhost:8000/api`
 
 ### Without Docker
 #### Requirements
  * Docker
  * Docker Compose
+
+#### Steps
+* Clone the repository and navigate to the project directory.
+```
+ git clone git@github.com:roc41d/crowdfunding-app.git
+ cd crowdfunding-app
+```
+* Configure Environment Variables
+```
+ cp .env.example .env
+
+ DB_CONNECTION=mysql
+ DB_HOST=db <-- This is the name of the MySQL service in the docker-compose file
+ DB_PORT=3306
+ DB_DATABASE=crowdfunding_app
+ DB_USERNAME=username
+ DB_PASSWORD=passwd
+```
+* Build the Docker containers.
+```
+ docker-compose build
+```
+* Start the Docker containers.
+```
+ docker-compose up -d
+```
+* Access the app container.
+```
+ docker exec -it app bash
+```
+* Install the dependencies using Composer.
+```
+ composer install
+```
+* Generate a new application key.
+```
+ php artisan key:generate
+```
+* Run Migrations
+```
+ php artisan migrate
+```
+Access the api at `http://localhost:8000/api`
 
 ## API Documentation
 
@@ -108,3 +151,5 @@ headers
     "donor_email": "mikedoe@email.com"
 }
 ```
+
+Demo Link: [Crowdfunding App](http://crowdfunding-api.us-east-1.elasticbeanstalk.com/api)
