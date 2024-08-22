@@ -18,7 +18,7 @@ The Crowdfunding Application is a platform that allows individuals in need to re
  - **Error Handling:** Errors are handled within the service layer using try-catch blocks to manage exceptions gracefully, especially during database interactions.
 
 ## Setup Instructions
-### Without Docker
+### With Docker
 #### Requirements
  * PHP 8.2 or higher
  * Composer
